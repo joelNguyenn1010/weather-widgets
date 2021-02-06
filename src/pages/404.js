@@ -1,7 +1,19 @@
+import styled from "styled-components";
+import Title from '../components/common/Title';
 const NotFound = () => {
     return (
-        <h1>404</h1>
+        <Container>
+            <Title>404</Title>
+        </Container>
+
     )
 }
+
+
+const Container = styled.div`
+    display: flex;
+    justify-content: center;
+`
+
 
 export default NotFound

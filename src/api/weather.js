@@ -1,4 +1,5 @@
 import axios from 'axios';
+import history from '../history';
 
 const API_URL = process.env.REACT_APP_API_URL
 const API_KEY = process.env.REACT_APP_API_KEY
@@ -51,6 +52,10 @@ class WeatherApiService {
         this.openWeatherAPI.interceptors.response.use(null, (error) => {
             // Catch all the status code here. since this is just a text and not part of requirements, I'm not gonna catch any error
 
+            // Ex:
+            // if(error && error.response && error.response.status === 404) {
+                // dispatch error here
+            // }
 
             return Promise.reject(error.response);
         });
