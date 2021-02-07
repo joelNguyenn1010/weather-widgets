@@ -3,7 +3,6 @@
 * API Key
 
 For the purpose of testing for Koala, I've pushed the .env to the repo that include the API key and API URL
-and of course on PROD: never push .env to the repo
 
 # Get started
 
