@@ -45,6 +45,7 @@ const GlobalStyles = createGlobalStyle`
   html, body {
     padding: 0;
     margin: 0;
+    min-width: 320px;
     box-sizing: border-box;
     background: ${props => props.theme.bodyBackgroundColor};
     font-family: sans-serif;

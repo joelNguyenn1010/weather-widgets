@@ -9,12 +9,18 @@ const API_KEY = process.env.REACT_APP_API_KEY;
 const resolveData = (response) => {
     const { list, city } = response.data;
     const forecast = list.map((data) => {
+        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        const monthNames = ["January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+        ];
+
         
-        const date_text = data.dt_txt;
-        const date = new Date(data.dt_txt).getDay();
+        const parseDate = new Date(data.dt_txt);
+        const date_text = `${parseDate.getDate()} ${monthNames[parseDate.getMonth()]} ${parseDate.getFullYear()}`;
+        const date = parseDate.getDay();
         const { temp, feels_like, humidity } = data.main;
         const description = data.weather[0]?.description || 'unknown';
-        const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+   
 
         return {
             id: data.dt,
@@ -50,7 +56,7 @@ class WeatherApiService {
         this.openWeatherAPI.interceptors.response.use(null, (error) => {
             // Catch all the status code here. since this is just a text and not part of requirements, I'm not gonna catch any error
             // Ex:
-            if(error && error.response && error.response.status === 404) {
+            if (error && error.response && error.response.status === 404) {
                 store.dispatch(createMessage(error.response.data?.message || "Can't find what you search for", 'error'))
             } else {
                 store.dispatch(createMessage("Server error", 'error'))
