@@ -12,11 +12,11 @@ const Notification = () => {
 
 const appearFromTop = keyframes`
     from {
-        height: 0;
+        transform: scaleY(0); 
     }
 
     to {
-        height: 100%;
+        transform: scaleY(1);
     }
 `
 
@@ -24,7 +24,8 @@ const NotificationContainer = styled.div`
     display: flex;
     justify-content: center;
     background-color: #f8d7da;
-    animation: ${appearFromTop} 3s linear;
+    transform-origin: top;
+    animation: ${appearFromTop} .3s ease;
 `
 
 const Message = styled.p`
