@@ -5,6 +5,11 @@ import { createMessage } from '../store/actions/notificationAction';
 const API_URL = process.env.REACT_APP_API_URL;
 const API_KEY = process.env.REACT_APP_API_KEY;
 
+const minutesWithLeadingZeros = (dt) => (dt.getMinutes() < 10 ? '0' : '') + dt.getMinutes();
+
+
+const hoursWithLeadingZeros = (dt) => (dt.getUTCHours() < 10 ? '0' : '') + dt.getUTCHours();
+
 // mapping the return data
 const resolveData = (response) => {
     const { list, city } = response.data;
@@ -16,7 +21,7 @@ const resolveData = (response) => {
 
         
         const parseDate = new Date(data.dt_txt);
-        const date_text = `${parseDate.getDate()} ${monthNames[parseDate.getMonth()]} ${parseDate.getFullYear()}`;
+        const date_text = `${parseDate.getDate()} ${monthNames[parseDate.getMonth()]} ${parseDate.getFullYear()} ${hoursWithLeadingZeros(parseDate)}:${minutesWithLeadingZeros(parseDate)}`;
         const date = parseDate.getDay();
         const { temp, feels_like, humidity } = data.main;
         const description = data.weather[0]?.description || 'unknown';
