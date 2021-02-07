@@ -54,7 +54,7 @@ const resolveData = (response) => {
     }
 }
 
-
+// mapping the return data
 const resolveGetCurrentWeather = (response) => {
 
     const { weather, name, dt, main } = response.data;
@@ -116,11 +116,9 @@ class WeatherApiService {
         return this.openWeatherAPI.get(service, options)
     }
 
-    getCurrentWeather(params) {
+    getCurrentWeather(params = {}) {
         return this.get('weather', {
-            params: {
-                ...params
-            }
+            params
         }).then(resolveGetCurrentWeather)
     }
 
