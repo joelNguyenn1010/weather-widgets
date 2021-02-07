@@ -15,4 +15,4 @@ class GeoService {
     }
 }
 
-export default new GeoService()
+export default new GeoService

@@ -1,54 +1,51 @@
+import { useEffect } from 'react';
 import Card from '../common/Card';
-import styled, { keyframes } from "styled-components";
+import Title from '../common/Title';
 import Spinner from '../common/Spinner';
-
 import Carousel from '../common/Carousel';
-import { useContext, useEffect, useState } from 'react';
-import { initWeather } from '../../store/weatherAction';
-
-import WeatherContext from '../../store/weatherContext';
+import styled, { keyframes } from "styled-components";
+import { useSelector, useDispatch } from 'react-redux';
+import { initWeather } from '../../store/actions/weatherAction';
 
 const Weather = () => {
-    const { forecast, city, weatherDispatch } = useContext(WeatherContext);
-
-    const [selected, setSelected] = useState(0);
-
-    // const { forecast, city } = weatherState;
+    // This one I used for Context API
+    // const { forecast, city, weatherDispatch } = useContext(WeatherContext);
+    const dispatch = useDispatch()
+    const { forecast, city } = useSelector(state => state.weatherReducer)
 
     useEffect(() => {
-        initWeather().then(payload => {
-            weatherDispatch({
-                type: 'GET_FORECAST',
-                payload
-            })
-        })
+        // This one I used for Context API
+        // initWeather().then(payload => {
+        //     weatherDispatch({
+        //         type: 'GET_FORECAST',
+        //         payload
+        //     })
+        // })
+
+        dispatch(initWeather());
     }, [])
 
 
 
     if (forecast && forecast.length > 0) {
         return <Carousel>
-            {forecast.map((weather, index) => {
+            {forecast.map(weather => (
+                <Wrapper key={weather.id}>
+                    <Card>
+                        <Title>{weather.date}</Title>
 
-                return (
-                    <Wrapper key={weather.id}>
-                        <Card onClick={() => setSelected(index)}>
-                            <Title>{weather.date}</Title>
+                        <Time>{weather.date_text}</Time>
 
-                            <Time>{weather.date_text}</Time>
+                        <Description>{weather.description}</Description>
 
-                            <Description style={{ textTransform: "capitalize" }}>{weather.description}</Description>
+                        <Metric>{weather.temp}<span>&#176;</span>C</Metric>
 
-                            <Metric>{weather.temp}<span>&#176;</span>C</Metric>
+                        <Description>Feels like: {weather.feels_like}</Description>
 
-                            <p>Feels like: {weather.feels_like}</p>
-
-                            <h3>{city.name}</h3>
-                        </Card>
-                    </Wrapper>
-
-                )
-            }
+                        <h3>{city.name}</h3>
+                    </Card>
+                </Wrapper>
+            )
             )}
         </Carousel>
     }
@@ -67,16 +64,6 @@ const Wrapper = styled.div`
     animation: ${fadeIn} 0.5s;
 `
 
-const Title = styled.h1`
-    font-size: 6rem;
-    padding-right: 1rem;
-    padding-left: 1rem;
-    @media (max-width: 768px) {
-        font-size: 2rem;
-    }
-    
-`;
-
 const Time = styled.p`
     font-size: 1rem;
 
@@ -88,7 +75,7 @@ const Time = styled.p`
 
 const Description = styled.p`
     font-size: 2rem;
-
+    text-transform: capitalize;
     @media (max-width: 768px) {
         font-size: 1rem;
     }

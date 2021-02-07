@@ -1,6 +1,6 @@
 
-import GeoService from '../api/geo';
-import WeatherApiService from '../api/weather';
+import GeoService from '../../api/geo';
+import WeatherApiService from '../../api/weather';
 
 export const getForecastByName = (input) => {
     return WeatherApiService.getDailyForecastByName(input)

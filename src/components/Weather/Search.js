@@ -1,27 +1,21 @@
-
+import Input from '../common/Input';
 import Button from '../common/Button';
 import styled from "styled-components";
-import { useContext, useState } from 'react';
-import WeatherContent from '../../store/weatherContext';
-import { getForecastByName } from '../../store/weatherAction';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+
+import { getForecastByName, clearForecast } from '../../store/actions/weatherAction';
 
 const Search = () => {
 
-    const { weatherDispatch } = useContext(WeatherContent);
+    const dispatch = useDispatch();
 
     const [input, setInput] = useState('');
 
     const onSubmit = (event) => {
-        if(input.length > 0) {
-            weatherDispatch({type: 'CLEAR'});
-
-            getForecastByName(input)
-                .then(payload => {
-                    weatherDispatch({
-                        type: 'GET_FORECAST',
-                        payload
-                    })
-                })
+        if (input.length > 0) {
+            dispatch(clearForecast());
+            dispatch(getForecastByName(input));
         }
 
         event.preventDefault();
@@ -30,7 +24,7 @@ const Search = () => {
     return (
         <Form onSubmit={onSubmit}>
             <FormGroup>
-                <Input placeholder="City, ZIP Code" onChange={event => setInput(event.target.value)} />
+                <InputLeftRounded placeholder="City, ZIP Code" onChange={event => setInput(event.target.value)} />
                 <SubmitButton type="submit">Search</SubmitButton>
             </FormGroup>
         </Form>
@@ -49,9 +43,7 @@ const FormGroup = styled.div`
 
 `
 
-const Input = styled.input`
-    padding: 0.7rem;
-    border: .5px solid #dbdbdb;
+const InputLeftRounded = styled(Input)`
     border-top-left-radius: 1rem;
     border-bottom-left-radius: 1rem;
 `
