@@ -32,6 +32,6 @@ npm start
  
 * `Able to search a specific location weather data.`: the Search component will be responsible for this
 
-* `Has a dark / light mode.` Styled-components support Theme Context to pass the light and dark data to other styled-components. The `ThemeToggle` will responsible for switching between light and dark themes.
+* `Has a dark / light mode.`: Styled-components support Theme Context to pass the light and dark data to other styled-components. The `ThemeToggle` will responsible for switching between light and dark themes.
 
 * `Adheres to minimum AA accessibility guidelines.` : Yes I am
