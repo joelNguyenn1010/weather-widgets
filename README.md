@@ -25,6 +25,8 @@ npm start
 
 * API request, I use `axios` for this. One feature I like about this package is that I can capture error in global (see it in `src/api/weather.js`). 
 
+* For `take-home-questions.md` test, [click here](https://github.com/joelNguyenn1010/test)
+
 # Requirements matching
 
 * `Shows your location's current and future weather data.`: Yes, component Weather will responsible for display the data and the weather context will use the api service to get the open weather API. I use the [5 day weather forecast](https://openweathermap.org/forecast5)
