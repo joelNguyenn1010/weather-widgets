@@ -4,6 +4,14 @@
 
 For the purpose of testing for Koala, I've pushed the .env to the repo that include the API key and API URL
 
+# Important
+
+There currently 3 free API from open weather I can use: [Current Weather Data](https://openweathermap.org/current), [One Call API](https://openweathermap.org/api/one-call-api), [5 Day / 3 Hour Forecast](https://openweathermap.org/forecast5). The One Call API I can't/don't want to use it because Geographical coordinates (latitude, longitude) is required to get the data and I want to be able to get weather by city name, etc.
+
+So I only use [Current Weather Data](https://openweathermap.org/current) to get current weather condition and [5 Day / 3 Hour Forecast](https://openweathermap.org/forecast5) 5 day forecast (this support get weather by city name)
+
+But hopefully Koala is only look at how design and structure the code to call the Api
+
 # Get started
 
 ## Step 1: Install all the packages

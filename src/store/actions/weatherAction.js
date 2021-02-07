@@ -1,5 +1,5 @@
 import GeoService from '../../api/geo';
-import { GET_FORECAST, CLEAR } from '../constant';
+import { GET_FORECAST, CLEAR, GET_CURRENT_WEATHER } from '../constant';
 import WeatherApiService from '../../api/weather';
 
 export const clearForecast = () => {
@@ -9,7 +9,16 @@ export const clearForecast = () => {
 }
 
 export const getForecastByName = (input) => (dispatch) => {
-    WeatherApiService.getDailyForecastByName(input)
+    WeatherApiService.getCurrentWeather({ q: input})
+    .then((payload) => {
+        dispatch({
+            type: GET_CURRENT_WEATHER,
+            payload
+        })
+    })
+    .then(() => {
+
+        WeatherApiService.getDailyForecastByName(input)
         .then(payload => {
             dispatch({
                 type: GET_FORECAST,
@@ -17,18 +26,28 @@ export const getForecastByName = (input) => (dispatch) => {
             })
         })
 
+    })
 }
 
-export const initWeather = () => (dispatch) => {
-    GeoService.getLatAndLong()
-        .then(({ latitude, longitude }) => {
-            return WeatherApiService.getDailyForecastByCoor(latitude, longitude)
-        })
+export const initWeather = () => async (dispatch) => {
+
+    const { latitude, longitude } = await GeoService.getLatAndLong();
+
+    WeatherApiService.getCurrentWeather({ lat: latitude, lon: longitude })
         .then((payload) => {
             dispatch({
-                type: GET_FORECAST,
+                type: GET_CURRENT_WEATHER,
                 payload
             })
         })
-
+        .then(() => {
+            WeatherApiService.getDailyForecastByCoor(latitude, longitude)
+                .then((payload) => {
+                    dispatch({
+                        type: GET_FORECAST,
+                        payload
+                    })
+                })
+        })
 }
+

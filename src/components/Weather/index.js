@@ -29,10 +29,11 @@ const Weather = () => {
 
     if (forecast && forecast.length > 0) {
         return <Carousel>
-            {forecast.map(weather => (
+            {forecast.map((weather, index) => (
                 <Wrapper key={weather.id}>
                     <Card>
                         <Title>{weather.date}</Title>
+                        {index === 0 ? <Description>(Current)</Description> : ''}
 
                         <Time>{weather.date_text}</Time>
 
@@ -42,7 +43,7 @@ const Weather = () => {
 
                         <Description>Feels like: {weather.feels_like}</Description>
 
-                        <h3>{city.name}</h3>
+                        <h3>{city}</h3>
                     </Card>
                 </Wrapper>
             )

@@ -1,15 +1,28 @@
-import { GET_FORECAST, CLEAR } from '../constant';
+import { GET_FORECAST, CLEAR, GET_CURRENT_WEATHER } from '../constant';
 export const initialState = {
-    city: {},
+    city: '',
     forecast: [],
 };
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case GET_FORECAST:
+        case GET_CURRENT_WEATHER:
+
+            const forecast = state.forecast.concat()
+            const { city, current } = action.payload
+            forecast.push({ ...current })
+
             return {
                 ...state,
-                ...action.payload
+                city,
+                forecast
+            }
+
+        case GET_FORECAST:
+            const forecastCurrentAndHourly = state.forecast.concat(action.payload.forecast)
+            return {
+                ...state,
+                forecast: forecastCurrentAndHourly
             }
         case CLEAR:
             return {

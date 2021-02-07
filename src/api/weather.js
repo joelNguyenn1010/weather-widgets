@@ -10,26 +10,36 @@ const minutesWithLeadingZeros = (dt) => (dt.getMinutes() < 10 ? '0' : '') + dt.g
 
 const hoursWithLeadingZeros = (dt) => (dt.getUTCHours() < 10 ? '0' : '') + dt.getUTCHours();
 
+const serializeMonth = (month) => {
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
+
+    return monthNames[month]
+}
+
+const serializeDay = (day) => {
+
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+    return days[day]
+
+}
+
 // mapping the return data
 const resolveData = (response) => {
     const { list, city } = response.data;
     const forecast = list.map((data) => {
-        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-        const monthNames = ["January", "February", "March", "April", "May", "June",
-            "July", "August", "September", "October", "November", "December"
-        ];
 
-        
         const parseDate = new Date(data.dt_txt);
-        const date_text = `${parseDate.getDate()} ${monthNames[parseDate.getMonth()]} ${parseDate.getFullYear()} ${hoursWithLeadingZeros(parseDate)}:${minutesWithLeadingZeros(parseDate)}`;
+        const date_text = `${parseDate.getDate()} ${serializeMonth(parseDate.getMonth())} ${parseDate.getFullYear()} ${hoursWithLeadingZeros(parseDate)}:${minutesWithLeadingZeros(parseDate)}`;
         const date = parseDate.getDay();
         const { temp, feels_like, humidity } = data.main;
         const description = data.weather[0]?.description || 'unknown';
-   
 
         return {
             id: data.dt,
-            date: days[date],
+            date: serializeDay(date),
             date_text,
             temp: Math.round(temp),
             feels_like: Math.round(feels_like),
@@ -44,6 +54,37 @@ const resolveData = (response) => {
     }
 }
 
+
+const resolveGetCurrentWeather = (response) => {
+
+    const { weather, name, dt, main } = response.data;
+
+    const {temp, feels_like, humidity} = main;
+
+    const parseDate = new Date(dt * 1000);
+    const date = parseDate.getDay();
+
+    const date_text = `${parseDate.getDate()} ${serializeMonth(parseDate.getMonth())} ${parseDate.getFullYear()} ${hoursWithLeadingZeros(parseDate)}:${minutesWithLeadingZeros(parseDate)}`;
+
+
+    const description = weather[0]?.description || 'unknown';
+
+    const current = {
+        id: dt,
+        date: serializeDay(date),
+        date_text,
+        temp: Math.round(temp),
+        feels_like: Math.round(feels_like),
+        humidity,
+        description
+    }
+
+
+    return ({
+        city: name,
+        current
+    })
+}
 /**
  * Responsible for call the Open Weather API
  */
@@ -73,6 +114,14 @@ class WeatherApiService {
 
     get(service, options) {
         return this.openWeatherAPI.get(service, options)
+    }
+
+    getCurrentWeather(params) {
+        return this.get('weather', {
+            params: {
+                ...params
+            }
+        }).then(resolveGetCurrentWeather)
     }
 
     getDailyForecastByCoor(lat, lon) {
