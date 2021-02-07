@@ -1,4 +1,4 @@
-# Requirements
+# Prerequisites
 * Node.js
 * API Key
 
